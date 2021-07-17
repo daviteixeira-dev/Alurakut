@@ -4,7 +4,7 @@ const Box = styled.div`
   background: #fff;
   border-radius: 8px;
   margin-bottom: 10px;
-  border-radius: 8px;
+  padding: 16px;
 
   .boxLink {
       font-size: 14px;
@@ -47,7 +47,7 @@ const Box = styled.div`
       border: 0;
       padding: 14px 16px;
       margin-bottom: 14px;
-      border-radius: 1000px;
+      border-radius: 10000px;
       ::placeholder {
           color: #333;
           opacity: 1;
