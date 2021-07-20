@@ -46,11 +46,7 @@ function ProfileRelationsBox(propriedades){
 export default function Home() {
 
   const usuarioAleatorio = 'daviteixeira-btm';
-  const [comunidades, setComunidades] = React.useState([{
-    id: '12312431231',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }]);
+  const [comunidades, setComunidades] = React.useState([]);
   const pessoasFavoritas = [
     'juunegreiros', 
     'omariosouto', 
@@ -63,12 +59,36 @@ export default function Home() {
   const [seguidores, setSeguidores] = React.useState([]);
 
   React.useEffect(function (){
-    fetch('https://api.github.com/users/peas/followers')
+    fetch('https://api.github.com/users/daviteixeira-btm/followers')
     .then(function(respostaDoServidor){
       return respostaDoServidor.json();
     })
     .then(function (respostaCompleta){
       setSeguidores(respostaCompleta);
+    })
+
+    //API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': '6718e7d0662a533ae5add41204ad1b',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ "query": `query {
+        allCommunities {
+          title
+          id
+          imageUrl
+          creatorSlug
+        }
+      }`})
+    })
+    .then((response) => response.json())
+    .then((respostaCompleta) => {
+      const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
+      console.log(comunidadesVindasDoDato)
+      setComunidades(comunidadesVindasDoDato)
     })
   }, [])
 
@@ -138,8 +158,8 @@ export default function Home() {
             {comunidades.map((itemAtual) => {
               return (
                 <li key={itemAtual.id}>
-                  <a href={`/users/${itemAtual.title}`}>
-                    <img src={itemAtual.image} />
+                  <a href={`/users/${itemAtual.id}`}>
+                    <img src={itemAtual.imageUrl} />
                     <span>{itemAtual.title}</span>
                   </a>
                 </li>
